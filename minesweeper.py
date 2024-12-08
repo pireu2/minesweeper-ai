@@ -297,7 +297,12 @@ class MinesweeperAI:
         """
         Runs Mace4 on the generated input file
         """
-        result = subprocess.run([MACE4_PATH], capture_output=True, text=True)
+        try:
+            result = subprocess.run([MACE4_PATH], capture_output=True, text=True)
+        except FileNotFoundError:
+            result = subprocess.run(["mace4"], capture_output=True, text=True)
+
+
         with open(f"{DIR_OUTPUT}/output_step_{self.step}.out", "w") as f:
             f.write(result.stdout)
         return result.stdout
