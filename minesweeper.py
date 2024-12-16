@@ -331,16 +331,6 @@ class MinesweeperAI:
         """
         Called when the Minesweeper board tells us, for a given
         safe cell, how many neighboring cells have mines in them.
-
-        This function should:
-            1) mark the cell as a move that has been made
-            2) mark the cell as safe
-            3) add a new sentence to the AI's knowledge base
-               based on the value of `cell` and `count`
-            4) mark any additional cells as safe or as mines
-               if it can be concluded based on the AI's knowledge base
-            5) add any new sentences to the AI's knowledge base
-               if they can be inferred from existing knowledge
         """
         self.moves_made.add(cell)
         self.mark_safe(cell)
@@ -381,18 +371,18 @@ class MinesweeperAI:
                     sentence_2.cells -= sentence_1.cells
                     sentence_2.count -= sentence_1.count
 
-    def parse_mace4_output(self, move):
-
-        # Generate the output Mace4 file
+    def interpret_mace4_output(self, output):
+        """
+        Parses the output from Mace4 and updates the AI's knowledge base.
+        Writes the output to a file.
+        """
         output_filename = f"{DIR_OUTPUT}/output_step_{self.step}.out"
         with open(output_filename, "w") as f:
             f.write(f"interpretation( 8, [number = {self.step},seconds = {dt.now().second}], [\n")
 
-            # Write the p function
             p_values = [1, 0, 1, 2, 3, 4, 5, 6, 7]
             f.write(f"    function(p(_), {p_values}),\n")
 
-            # Write the s function
             s_values = [1, 2, 3, 4, 5, 6, 7, 8, 7]
             f.write(f"    function(s(_), {s_values}),\n")
 
